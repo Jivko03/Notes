@@ -1,0 +1,125 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
+namespace ConsoleApp3
+{
+	class Note
+		{
+			public int NoteID { get; set; }
+			public string Task { get; set; }
+			public void NoteDetails() 
+			{
+			Console.WriteLine("Enter the number");
+			NoteID = int.Parse(Console.ReadLine());
+			Console.WriteLine("What is the task to be performed?");
+			Task = Console.ReadLine();
+			}
+		public void DisplayNote() 
+		{
+			Console.WriteLine($"Note {NoteID}: {Task}");
+		}
+		public string FormatForFile()
+		{
+			return $"{NoteID}:{Task}";
+		}
+
+	}
+
+	public class Program
+	{
+		static List<Note> notes = new List<Note>();
+		static string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "notes.txt");
+		static void Main(string[] args)
+		{
+			string action;
+			Console.WriteLine("Do you want to add, remove or edit note");
+			action = Console.ReadLine();
+			Console.WriteLine("How many notes do you want to add/remove or edit?");
+			int numofadd = int.Parse(Console.ReadLine());
+				for (int i = 0; i < numofadd; i++)
+				{
+					switch (action)
+					{
+						case "add":
+							Note Note = new Note();
+							Note.NoteDetails();
+							notes.Add(Note);
+							Console.WriteLine("Note was successfully added ");
+							break;
+						case "remove":
+							Console.WriteLine("What note do you want to remove?");
+							int notenum = int.Parse(Console.ReadLine());
+							Note remove = notes.Find(noting => noting.NoteID == notenum);
+							if (remove != null)
+							{
+								notes.Remove(remove);
+							}
+							else
+							{
+								Console.WriteLine("There is no note with such number");
+							}
+							break;
+						case "edit":
+							Console.WriteLine("What note do you want to edit?");
+							int notetoedit = int.Parse(Console.ReadLine());
+							Note edit = notes.Find(noting => noting.NoteID == notetoedit);
+							if (edit != null)
+							{
+								edit.Task = Console.ReadLine();
+								Console.WriteLine("The note was succsesfilly edited.");
+							}
+							else
+							{
+								Console.WriteLine("There is no note with such number");
+							}
+							break;
+						default: Console.WriteLine("The action you want to perform isn't a fucntion for this app"); break;
+					}
+				}
+			Console.WriteLine("Do you want to see what notes you have?");
+			string answer = Console.ReadLine();
+			switch(answer)
+			{
+				case "yes":
+					if (notes.Count > 0)
+					{
+						foreach (var note in notes)
+						{
+							note.DisplayNote();
+						}
+						using (StreamWriter writer = new StreamWriter(filePath))
+						{
+							foreach (Note note in notes)
+							{
+								writer.WriteLine(note.FormatForFile());
+							}
+						}
+						Console.WriteLine("Notes saved to file successfully.");
+					}
+					else
+					{
+						Console.WriteLine("No notes available.");
+					}
+					break;
+					case "no":
+					Console.WriteLine("Goodbye!");
+					using (StreamWriter writer = new StreamWriter(filePath))
+					{
+						foreach (Note note in notes)
+						{
+							writer.WriteLine(note.FormatForFile());
+						}
+					}
+					Console.WriteLine("Notes saved to file successfully.");
+					break;
+			}
+			Console.ReadKey();
+		}
+	}
+	
+}
