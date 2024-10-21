@@ -1,0 +1,10 @@
+C:\Users\mojef\source\repos\JNotes\bin\Debug\JNotes.exe.config
+C:\Users\mojef\source\repos\JNotes\bin\Debug\JNotes.exe
+C:\Users\mojef\source\repos\JNotes\bin\Debug\JNotes.pdb
+C:\Users\mojef\source\repos\JNotes\obj\Debug\JNotes.csproj.AssemblyReference.cache
+C:\Users\mojef\source\repos\JNotes\obj\Debug\JNotes.Form1.resources
+C:\Users\mojef\source\repos\JNotes\obj\Debug\JNotes.Properties.Resources.resources
+C:\Users\mojef\source\repos\JNotes\obj\Debug\JNotes.csproj.GenerateResource.cache
+C:\Users\mojef\source\repos\JNotes\obj\Debug\JNotes.csproj.CoreCompileInputs.cache
+C:\Users\mojef\source\repos\JNotes\obj\Debug\JNotes.exe
+C:\Users\mojef\source\repos\JNotes\obj\Debug\JNotes.pdb
