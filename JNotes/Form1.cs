@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace JNotes
 {
@@ -21,8 +22,10 @@ namespace JNotes
 		public int Year { get; set; }
 		int count = 0;
 		public string storedText { get; set; }
-		List<Label> lobe = new List<Label>();
-		static string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "JMotes.txt");
+		List<string> lobe = new List<string>();
+		Label labe = new Label();
+		static string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "JNotes.txt");
+
 		public Form1()
 		{
 			InitializeComponent();
@@ -34,13 +37,10 @@ namespace JNotes
 			int num = count + 1;
 			labe.Text = num+": "+textBox1.Text;
 			labe.Location = new Point(50, 50 + (count * 30));
-			labe.Location = new Point(50, 50 + (count * 30));
 			this.Controls.Add(labe);
+			lobe.Add(labe.Text);
 			count++;
-			using (StreamWriter writer = new StreamWriter(filePath))
-			{
-					writer.WriteLine(labe.Text);
-			}
+			textBox1.Text = "";
 		}
 
 		private void label1_Click(object sender, EventArgs e)
@@ -60,7 +60,17 @@ namespace JNotes
 
 		private void button4_Click(object sender, EventArgs e)
 		{
-			
+			try
+			{
+				// Write each note to the text file as a new line
+				File.WriteAllLines(filePath, lobe);
+
+				MessageBox.Show("Notes exported to TXT file successfully!", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"An error occurred while exporting: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 	}
 }
