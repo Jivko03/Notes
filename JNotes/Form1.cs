@@ -100,12 +100,42 @@ namespace JNotes
 
 		private void button3_Click(object sender, EventArgs e)
 		{
-			int delthis = int.Parse(textBox1.Text);
-			if (delthis == count)
-			{
-				ExportListToTxt(lobe, filePath);
-				lobe.RemoveAt(count);
-			}
+				int noteIDToDelete;
+
+				if (int.TryParse(textBox1.Text, out noteIDToDelete))
+				{
+
+					Task taskToRemove = lobe.FirstOrDefault(t => t.NoteID == noteIDToDelete);
+
+					if (taskToRemove != null)
+					{
+						// Find the corresponding label by its text (or use another identifier if you have one)
+						Label labelToRemove = this.Controls.OfType<Label>()
+							.FirstOrDefault(l => l.Text.Contains(taskToRemove.NoteID.ToString()));
+
+						if (labelToRemove != null)
+						{
+							// Remove the label from the form controls
+							this.Controls.Remove(labelToRemove);
+						}
+
+						// Remove the task from the list
+						lobe.Remove(taskToRemove);
+
+						MessageBox.Show($"Task {noteIDToDelete} and its label have been removed.");
+					}
+					else
+					{
+						MessageBox.Show("Task not found.");
+					}
+				}
+				else
+				{
+					MessageBox.Show("Invalid NoteID. Please enter a valid number.");
+				}
+
+				// Clear the input field
+				textBox1.Text = "";
 		}
 
 		private void button4_Click(object sender, EventArgs e)
@@ -119,6 +149,11 @@ namespace JNotes
 		}
 
 		private void textBox3_TextChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void textBox4_TextChanged(object sender, EventArgs e)
 		{
 
 		}
