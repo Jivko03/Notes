@@ -115,12 +115,33 @@ namespace JNotes
 
 						if (labelToRemove != null)
 						{
-							// Remove the label from the form controls
-							this.Controls.Remove(labelToRemove);
-						}
+						int day, month, year;
+						string enddate = textBox3.Text;
+						string[] thedates = enddate.Split('.');
+						day = int.Parse(thedates[0]);
+						month = int.Parse(thedates[1]);
+						year = int.Parse(thedates[2]);
+						string ob = textBox1.Text;
+						string ta = textBox2.Text;
+						Label labe = new Label();
+						Task newTask = new Task(textBox1.Text, count, textBox2.Text, day, month, year);
+						labe.MaximumSize = new Size(400, 0);
+						labe.AutoSize = true;
+						labe.Text = String.Format("{0} {1}: {2} End Date: {3}", ob, count, ta, enddate);
+						labe.Location = new Point(50, 50 + (count * 30));
+						this.Controls.Add(labe);
+						lobe.Add(newTask);
+						count++;
+						textBox1.Text = "";
+						textBox2.Text = "";
+						textBox3.Text = "";
+						lobe.Add(newTask);
+					}
 
 						// Remove the task from the list
-						lobe.Remove(taskToRemove);
+					lobe.Remove(taskToRemove);
+					this.Controls.Add(labe);
+					count++;
 
 						MessageBox.Show($"Task {noteIDToDelete} and its label have been removed.");
 					}
@@ -134,8 +155,12 @@ namespace JNotes
 					MessageBox.Show("Invalid NoteID. Please enter a valid number.");
 				}
 
-				// Clear the input field
-				textBox1.Text = "";
+			// Clear the input field
+			
+			textBox1.Text = "";
+			textBox2.Text = "";
+			textBox3.Text = "";
+			textBox1.Text = "";
 		}
 
 		private void button4_Click(object sender, EventArgs e)
@@ -156,6 +181,46 @@ namespace JNotes
 		private void textBox4_TextChanged(object sender, EventArgs e)
 		{
 
+		}
+
+		private void button2_Click(object sender, EventArgs e)
+		{
+			int noteIDToEdit;
+
+			if (int.TryParse(textBox1.Text, out noteIDToEdit))
+			{
+
+				Task taskToRemove = lobe.FirstOrDefault(t => t.NoteID == noteIDToEdit);
+
+				if (taskToRemove != null)
+				{
+					// Find the corresponding label by its text (or use another identifier if you have one)
+					Label labelToRemove = this.Controls.OfType<Label>()
+						.FirstOrDefault(l => l.Text.Contains(taskToRemove.NoteID.ToString()));
+
+					if (labelToRemove != null)
+					{
+						// Remove the label from the form controls
+						this.Controls.Remove(labelToRemove);
+					}
+
+					// Remove the task from the list
+					lobe.Remove(taskToRemove);
+
+					MessageBox.Show($"Task {noteIDToEdit} and its label have been removed.");
+				}
+				else
+				{
+					MessageBox.Show("Task not found.");
+				}
+			}
+			else
+			{
+				MessageBox.Show("Invalid NoteID. Please enter a valid number.");
+			}
+
+			// Clear the input field
+			textBox1.Text = "";
 		}
 	}
 }
